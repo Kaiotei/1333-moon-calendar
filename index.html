@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✟ 1333 COVENANT ✟ - Moon</title>
+  <meta name="description" content="1333 Covenant moon tracker: real lunations, Gregorian and thirteen-moon calendars, church and biblical feast days, and how barometric pressure can affect the body.">
+  <style>
+    :root {
+      --purple-main: #C4A8E8;
+      --purple-dark: #96799c;
+      --purple-deeper: #96799c;
+      --purple-mid: #96799c;
+      --text-dark: #322036;
+      --accent-purple: #5B18A8;
+      --accent-hover: #96799c;
+      --panel-bg: radial-gradient(circle, rgba(255,255,255,1) 58%, rgba(242,232,255,1) 85%, rgba(220,200,248,1) 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: url(https://cur.cursors-4u.net/games/gam-10/gam987.png), auto !important; }
+    body {
+      font-family: 'MS UI Gothic', 'Segoe UI', Arial, sans-serif;
+      font-size: 13px; color: var(--text-dark);
+      background-color: #322036;
+      background-repeat: no-repeat; background-size: cover; background-position: center top; background-attachment: fixed;
+      min-height: 100vh; overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+      pointer-events: none; z-index: 1;
+    }
+    a { color: var(--accent-purple); text-decoration: none; font-weight: bold; }
+    a:hover { color: var(--accent-hover); }
+    ::-webkit-scrollbar { width: 15px; height: 10px; }
+    ::-webkit-scrollbar-thumb:vertical {
+      background: linear-gradient(180deg, #c4a8e8, #96799c);
+      border-top: 1px solid #ddc8f8; border-left: 1px solid #ddc8f8;
+      border-right: 1px solid #96799c; border-bottom: 1px solid #96799c;
+    }
+    ::-webkit-scrollbar-track { background: #f0e8ff; }
+
+      color: #322036; text-align: center; padding: 6px 11px; display: inline-block;
+      font-family: 'MS UI Gothic', Arial, sans-serif; font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase; border-radius: 3px;
+    }
+
+    .main-container { max-width: 860px; margin: 0 auto; padding: 0 20px 24px; position: relative; z-index: 2; }
+    .header-title {
+      background: linear-gradient(180deg, #ede0ff 0%, #dcc8f8 50%, #ede0ff 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 3px 14px rgba(155,108,216,0.15);
+      padding: 14px 88px 14px 20px; color: #322036; text-align: center;
+      border-radius: 0 0 0 40px; border: 2px solid #9B6CD8; border-top: none; margin-bottom: 15px;
+    }
+    .header-title h1 { font-size: 22px; margin-bottom: 4px; letter-spacing: 3px; }
+    .header-title p { font-size: 11px; opacity: 0.75; letter-spacing: 2px; text-transform: uppercase; }
+
+    .panel {
+      background: var(--panel-bg); border: 2px solid #9B6CD8; border-top: 3px solid #C4A8E8;
+      border-radius: 0 0 0 40px; padding: 20px; margin-bottom: 15px;
+      box-shadow: 3px 3px 0 rgba(50,32,54,0.2), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .panel-alt {
+      background: var(--panel-bg); border: 2px solid #9B6CD8; border-top: 3px solid #C4A8E8;
+      border-radius: 40px 0 0 0; padding: 20px; margin-bottom: 15px;
+      box-shadow: 3px 3px 0 rgba(50,32,54,0.2), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .panel-header {
+      background: linear-gradient(180deg, #e8d4ff 0%, #d8bef8 60%, #e8d4ff 100%);
+      padding: 7px 15px; color: #322036; font-size: 12px; font-weight: bold;
+      margin: -20px -20px 15px -20px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .panel-alt .panel-header { border-radius: 38px 0 0 0; }
+
+    .moon-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+    .moon-graphic {
+      width: 180px; height: 180px; border-radius: 50%; position: relative; overflow: hidden;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35) 0%, transparent 2%),
+        radial-gradient(ellipse at 50% 50%, #e8e8e8 0%, #c0c0c0 50%, #808080 100%);
+      box-shadow: 0 0 28px rgba(196,168,232,0.45), inset -6px -6px 16px rgba(0,0,0,0.35);
+    }
+    .moon-shadow {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(20,8,32,0.88); z-index: 2;
+    }
+    .phase-name { font-size: 20px; color: #5B18A8; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    .phase-meta { font-family: 'Courier New', monospace; font-size: 13px; color: #5B18A8; }
+    .phase-next { font-size: 12px; line-height: 1.5; }
+
+    .wx-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .wx-stat { background: rgba(155,108,216,0.08); border-left: 3px solid #9B6CD8; padding: 8px 10px; }
+    .wx-stat.band-high { border-left-color: #5B18A8; }
+    .wx-stat.band-avg { border-left-color: #9B6CD8; }
+    .wx-stat.band-low { border-left-color: #96799c; }
+    .wx-label { display: block; font-size: 10px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: #5B18A8; }
+    .wx-value { font-size: 16px; font-weight: bold; }
+    .wx-band {
+      display: inline-block; margin-left: 8px; padding: 2px 7px; font-size: 9px; letter-spacing: 1px;
+      text-transform: uppercase; font-weight: bold; border: 1px solid #9B6CD8; vertical-align: middle;
+    }
+    .wx-stat.band-high .wx-band { background: #5B18A8; color: #fff; border-color: #5B18A8; }
+    .wx-stat.band-avg .wx-band { background: #e0ccf8; color: #322036; }
+    .wx-stat.band-low .wx-band { background: #322036; color: #e0ccf8; border-color: #322036; }
+    .wx-search { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .wx-search input {
+      flex: 1; min-width: 140px; padding: 8px; border: 1px solid #9B6CD8; background: #fff; font-family: inherit;
+    }
+    .btn {
+      padding: 8px 12px; background: linear-gradient(180deg, #e0ccf8, #c4a8e8);
+      border: 1px solid #9B6CD8; color: #322036; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .wx-note { font-size: 12px; line-height: 1.5; margin-top: 8px; }
+
+    .cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .cal-nav h3 { font-size: 13px; letter-spacing: 0.5px; text-align: center; flex: 1; }
+    .cal-nav button { min-width: 36px; height: 32px; }
+    .cal-weekdays, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-weekdays span { text-align: center; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #5B18A8; padding: 4px 0; }
+    .cal-cell {
+      min-height: 54px; background: rgba(255,255,255,0.65); border: 1px solid rgba(155,108,216,0.35);
+      padding: 4px 3px; font-size: 11px; position: relative;
+    }
+    .cal-cell.empty { background: transparent; border-color: transparent; }
+    .cal-cell.today { outline: 2px solid #5B18A8; background: rgba(196,168,232,0.28); }
+    .cal-cell .num { font-weight: bold; display: block; }
+    .cal-cell .sub { font-size: 8px; opacity: 0.7; }
+    .hol-dot {
+      display: block; margin-top: 2px; font-size: 8px; line-height: 1.2; color: #5B18A8;
+      cursor: pointer !important; text-align: left;
+    }
+    .today-bar { display: flex; justify-content: center; margin: 0 0 12px; }
+
+    .essay p { font-size: 13px; line-height: 1.65; margin-bottom: 10px; }
+    .essay h3 { font-size: 13px; color: #5B18A8; margin: 12px 0 6px; letter-spacing: 1px; text-transform: uppercase; }
+    .disclaimer { font-size: 11px; opacity: 0.75; border-top: 1px dashed #9B6CD8; padding-top: 10px; margin-top: 8px; }
+
+    .upcoming li { font-size: 12px; margin: 0 0 6px 16px; }
+    .rule { font-size: 11px; line-height: 1.5; opacity: 0.8; margin-bottom: 10px; }
+    .zodiac-aside { font-size: 12px; }
+
+    #cal-pop {
+      display: none; position: fixed; z-index: 500; max-width: 240px;
+      background: #fff; border: 2px solid #9B6CD8; padding: 10px 12px;
+      box-shadow: 4px 4px 0 rgba(50,32,54,0.2);
+    }
+    #cal-pop strong { display: block; color: #5B18A8; margin-bottom: 4px; }
+
+    .site-footer {
+      text-align: center; padding: 14px;
+      background: linear-gradient(180deg, #ede0ff, #dcc8f8);
+      border-top: 2px solid #9B6CD8; color: #322036; font-size: 11px; margin-top: 20px;
+      position: relative; z-index: 2;
+    }
+    .footer-links a { padding: 0 8px; border-right: 1px solid #9B6CD8; }
+    .footer-links a:last-child { border-right: none; }
+
+    @media (max-width: 768px) {
+      .main-container { padding: 0 12px 24px; }
+      .header-title { padding-right: 72px; }
+      .wx-row { grid-template-columns: 1fr; }
+      .cal-cell { min-height: 48px; }
+    }
+    @media (max-width: 600px) {
+      .moon-graphic { width: 150px; height: 150px; }
+    }
+  </style>
+</head>
+<body>
+<div class="main-container">
+  <div class="header-title">
+    <h1>&#x263D; MOON TRACKER</h1>
+    <p>Lunations, calendars, pressure, and the church year</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">The moon right now</div>
+    <div class="moon-hero">
+      <div class="moon-graphic" id="moon-graphic"><div class="moon-shadow" id="moon-shadow"></div></div>
+      <div class="phase-name" id="phase-name">…</div>
+      <div class="phase-meta" id="phase-meta"></div>
+      <div class="phase-next" id="phase-next"></div>
+    </div>
+  </div>
+
+  <div class="panel-alt">
+    <div class="panel-header">Barometer</div>
+    <div class="wx-row">
+      <div class="wx-stat"><span class="wx-label">Location</span><span class="wx-value" id="wx-place">-</span></div>
+      <div class="wx-stat" id="wx-hpa-stat"><span class="wx-label">Pressure</span><span class="wx-value" id="wx-hpa">-</span><span class="wx-band" id="wx-band" hidden>-</span></div>
+      <div class="wx-stat"><span class="wx-label">Trend</span><span class="wx-value" id="wx-trend">-</span></div>
+      <div class="wx-stat"><span class="wx-label">Sky</span><span class="wx-value" id="wx-sky">-</span></div>
+    </div>
+    <p class="wx-note" id="wx-feel">Allow location or search a city to load live pressure.</p>
+    <div class="wx-search">
+      <button type="button" class="btn" id="wx-geo">Use my location</button>
+      <input id="wx-q" type="text" placeholder="City name" autocomplete="off">
+      <button type="button" class="btn" id="wx-go">Search</button>
+    </div>
+  </div>
+
+  <div class="today-bar"><button type="button" class="btn" id="cal-today">Today</button></div>
+
+  <div class="panel">
+    <div class="panel-header">Thirteen moons calendar</div>
+    <p class="rule">Each moon starts at the astronomical New Moon and lasts 29–30 days. A solar year holds 12 or 13 of these. This is the real cycle, not a 28-day grid.</p>
+    <div class="cal-nav">
+      <button type="button" class="btn" id="lun-prev">◀</button>
+      <h3 id="lun-title">Moon</h3>
+      <button type="button" class="btn" id="lun-next">▶</button>
+    </div>
+    <div class="cal-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+    <div class="cal-grid" id="lun-grid"></div>
+  </div>
+
+  <div class="panel-alt">
+    <div class="panel-header">Gregorian calendar</div>
+    <p class="rule">The civil 12-month year. Same feast days appear here and on the moon calendar when that date is in view.</p>
+    <div class="cal-nav">
+      <button type="button" class="btn" id="greg-prev">◀</button>
+      <h3 id="greg-title">Month</h3>
+      <button type="button" class="btn" id="greg-next">▶</button>
+    </div>
+    <div class="cal-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+    <div class="cal-grid" id="greg-grid"></div>
+  </div>
+
+  <div class="panel essay">
+    <div class="panel-header">Weather, pressure, and the body</div>
+    <h3>What the barometer is saying</h3>
+    <p>Air has weight. Barometric pressure is that weight, measured in hectopascals (hPa). Around 1013 hPa is a common sea-level average. High pressure (often above 1020) usually means stable, clearer air. Low pressure (often below 1005) means the air column is lighter, clouds and storms can build, and fronts are nearby.</p>
+    <h3>High vs low</h3>
+    <p>A rising barometer often follows a passing front: the sky hardens, wind settles. A falling barometer often means a low is approaching. The speed of the drop matters more than a single number. A fast fall is a classic storm warning. A slow drift may only be the daily tide of the atmosphere.</p>
+    <h3>Fronts</h3>
+    <p>A front is the boundary between two air masses. Cold fronts can arrive with a sharp pressure drop, wind shift, and a line of rain. Warm fronts lift more slowly. Your ears, sinuses, and joints are sitting inside this moving fluid. They do not need a storm on the radar to notice the pressure change a few hours early.</p>
+    <h3>Joints, head, sinuses, mood</h3>
+    <p>Many people report more joint ache, migraines, or sinus pressure when the barometer falls. Lower external pressure can let tissues expand a little and can change how fluid sits in sinuses and the inner ear. Sleep and mood can shift with the same weather, especially when clouds cut light and the body is already tired. This is common, not imaginary, and it is also not a diagnosis. Hydration, rest, and known care from a clinician still come first.</p>
+    <h3>Tides and the moon</h3>
+    <p>The moon raises ocean tides by gravity. It does not set your local barometer. Pressure is weather. The moon page keeps both: lunation above, atmosphere beside it, so they are not confused.</p>
+    <p class="disclaimer">Educational only. Not medical advice. If pain, breathing, or mood changes worry you, talk to a qualified clinician. Live numbers come from Open-Meteo when a location is set.</p>
+  </div>
+
+  <div class="panel-alt">
+    <div class="panel-header">Upcoming</div>
+    <p class="rule">Biblical feast dates here use Nisan 1 = the first apparent New Moon on or after March 20 UTC, then count days in that lunation. This is astronomical, not the rabbinic calendar with postponements. Western Easter uses the Gregorian computus (2026: April 5).</p>
+    <ul class="upcoming" id="upcoming-list"></ul>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">Sun sign</div>
+    <p class="zodiac-aside" id="zodiac-aside"></p>
+  </div>
+</div>
+
+<div class="site-footer">
+  <div>Moon tracker from <a href="https://1333covenant.com/moon">13 &lt;33 Covenant</a> ◆ AGPL-3.0</div>
+</div>
+<div id="cal-pop"></div>
+
+<script src="moon-calc.js"></script>
+<script>
+(function () {
+  var M = window.CovenantMoon;
+  var lunK, gregY, gregM;
+  var holByDay = {};
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var WX_CODES = {
+    0: 'Clear', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+    45: 'Fog', 48: 'Rime fog', 51: 'Light drizzle', 53: 'Drizzle', 55: 'Heavy drizzle',
+    61: 'Light rain', 63: 'Rain', 65: 'Heavy rain', 71: 'Light snow', 73: 'Snow', 75: 'Heavy snow',
+    80: 'Rain showers', 81: 'Showers', 82: 'Violent showers', 95: 'Thunderstorm', 96: 'Storm + hail', 99: 'Storm + hail'
+  };
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + d.getDate(); }
+  function utcYmd(d) { return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); }
+  function fromYmd(s) {
+    var p = s.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function fmtLong(d) {
+    return d.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+  }
+  function fmtDay(d) {
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function easterSunday(year) {
+    var a = year % 19, b = Math.floor(year / 100), c = year % 100;
+    var d = Math.floor(b / 4), e = b % 4;
+    var f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+    var h = (19 * a + b - d - g + 15) % 30;
+    var i = Math.floor(c / 4), k = c % 4;
+    var l = (32 + 2 * e + 2 * i - h - k) % 7;
+    var m = Math.floor((a + 11 * h + 22 * l) / 451);
+    var month = Math.floor((h + l - 7 * m + 114) / 31);
+    var day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
+  }
+
+  function nthSundayBefore(date, n) {
+    var d = addDays(new Date(date.getFullYear(), date.getMonth(), date.getDate()), -1);
+    while (d.getDay() !== 0) d = addDays(d, -1);
+    return addDays(d, -7 * (n - 1));
+  }
+
+  function nisan1Utc(year) {
+    var start = new Date(Date.UTC(year, 2, 20, 0, 0, 0));
+    var k = M.lastNewK(start);
+    if (M.jdeOfPhase(k) < M.dateToJD(start) - 0.0001) k += 1;
+    return { k: k, date: M.jdToDate(M.jdeOfPhase(k)) };
+  }
+
+  function addHol(map, date, name, note) {
+    var key = ymd(date);
+    if (!map[key]) map[key] = [];
+    map[key].push({ name: name, note: note || '' });
+  }
+
+  function holidaysForYear(year) {
+    var map = {};
+    var xmas = new Date(year, 11, 25);
+    var advent = nthSundayBefore(xmas, 4);
+    var christKing = addDays(advent, -7);
+    var easter = easterSunday(year);
+    addHol(map, new Date(year, 0, 6), 'Epiphany', 'Visit of the Magi.');
+    addHol(map, advent, 'Advent begins', 'Fourth Sunday before Christmas.');
+    addHol(map, christKing, 'Christ the King', 'Sunday before Advent.');
+    addHol(map, addDays(easter, -46), 'Ash Wednesday', 'Start of Lent.');
+    addHol(map, addDays(easter, -7), 'Palm Sunday', 'Entrance into Jerusalem.');
+    addHol(map, addDays(easter, -2), 'Good Friday', 'The crucifixion.');
+    addHol(map, easter, 'Easter', 'Western Gregorian computus.');
+    addHol(map, addDays(easter, 39), 'Ascension', 'Forty days after Easter.');
+    addHol(map, addDays(easter, 49), 'Pentecost', 'Fifty days after Easter.');
+    addHol(map, addDays(easter, 56), 'Trinity Sunday', 'Sunday after Pentecost.');
+    addHol(map, new Date(year, 10, 1), 'All Saints', 'November 1.');
+    addHol(map, xmas, 'Christmas', 'Nativity of Jesus.');
+
+    var nisan = nisan1Utc(year);
+    var n1 = new Date(nisan.date.getUTCFullYear(), nisan.date.getUTCMonth(), nisan.date.getUTCDate());
+    addHol(map, n1, 'Nisan 1', 'First New Moon on or after March 20 UTC.');
+    addHol(map, addDays(n1, 13), 'Passover', 'Nisan 14. Lamb and exodus.');
+    addHol(map, addDays(n1, 14), 'Unleavened Bread begins', 'Nisan 15.');
+    addHol(map, addDays(n1, 15), 'Firstfruits', 'Nisan 16.');
+    addHol(map, addDays(n1, 20), 'Unleavened Bread ends', 'Nisan 21.');
+    var sivan1 = M.jdToDate(M.jdeOfPhase(nisan.k + 2));
+    var s1 = new Date(sivan1.getUTCFullYear(), sivan1.getUTCMonth(), sivan1.getUTCDate());
+    addHol(map, addDays(s1, 5), 'Shavuot', 'Sivan 6. Weeks / first wheat.');
+    var tish1d = M.jdToDate(M.jdeOfPhase(nisan.k + 6));
+    var t1 = new Date(tish1d.getUTCFullYear(), tish1d.getUTCMonth(), tish1d.getUTCDate());
+    addHol(map, t1, 'Trumpets', 'Tishrei 1.');
+    addHol(map, addDays(t1, 9), 'Atonement', 'Tishrei 10.');
+    addHol(map, addDays(t1, 14), 'Tabernacles begins', 'Tishrei 15.');
+    addHol(map, addDays(t1, 20), 'Tabernacles ends', 'Tishrei 21.');
+    return map;
+  }
+
+  function mergeYears(y) {
+    var a = holidaysForYear(y - 1), b = holidaysForYear(y), c = holidaysForYear(y + 1);
+    var out = {};
+    [a, b, c].forEach(function (m) {
+      Object.keys(m).forEach(function (k) {
+        out[k] = (out[k] || []).concat(m[k]);
+      });
+    });
+    return out;
+  }
+
+  function moonsOfYear(year) {
+    var k = Math.round(M.approxK(new Date(year, 0, 15)));
+    var list = [];
+    for (var i = k - 3; i <= k + 16; i++) {
+      var d = M.jdToDate(M.jdeOfPhase(i));
+      if (d.getFullYear() === year) list.push(i);
+    }
+    return list;
+  }
+
+  function moonNumber(k) {
+    var d = M.jdToDate(M.jdeOfPhase(k));
+    var list = moonsOfYear(d.getFullYear());
+    var idx = list.indexOf(k);
+    if (idx >= 0) return { n: idx + 1, count: list.length, year: d.getFullYear() };
+    return { n: 0, count: list.length, year: d.getFullYear() };
+  }
+
+  function drawMoon(phase) {
+    var shadow = document.getElementById('moon-shadow');
+    if (phase < 0.03 || phase >= 0.97) {
+      shadow.style.width = '100%'; shadow.style.left = '0'; shadow.style.right = 'auto'; shadow.style.borderRadius = '50%';
+    } else if (phase < 0.5) {
+      shadow.style.left = '0'; shadow.style.right = 'auto';
+      shadow.style.width = ((1 - phase * 2) * 100) + '%';
+      shadow.style.borderRadius = '100px 0 0 100px';
+    } else if (phase < 0.53) {
+      shadow.style.width = '0%';
+    } else {
+      shadow.style.left = 'auto'; shadow.style.right = '0';
+      shadow.style.width = (((phase - 0.5) * 2) * 100) + '%';
+      shadow.style.borderRadius = '0 100px 100px 0';
+    }
+  }
+
+  function holDots(key) {
+    var list = holByDay[key] || [];
+    return list.map(function (h, i) {
+      return '<button type="button" class="hol-dot" data-key="' + key + '" data-i="' + i + '">' + h.name + '</button>';
+    }).join('');
+  }
+
+  function renderGreg() {
+    document.getElementById('greg-title').textContent = MONTHS[gregM] + ' ' + gregY;
+    var first = new Date(gregY, gregM, 1);
+    var startDow = first.getDay();
+    var dim = new Date(gregY, gregM + 1, 0).getDate();
+    var today = ymd(new Date());
+    var html = '';
+    var i;
+    for (i = 0; i < startDow; i++) html += '<div class="cal-cell empty"></div>';
+    for (var d = 1; d <= dim; d++) {
+      var dt = new Date(gregY, gregM, d);
+      var key = ymd(dt);
+      html += '<div class="cal-cell' + (key === today ? ' today' : '') + '"><span class="num">' + d + '</span>' + holDots(key) + '</div>';
+    }
+    document.getElementById('greg-grid').innerHTML = html;
+  }
+
+  function renderLun() {
+    var start = M.jdToDate(M.jdeOfPhase(lunK));
+    var next = M.jdToDate(M.jdeOfPhase(lunK + 1));
+    var days = Math.round((next - start) / 86400000);
+    var info = moonNumber(lunK);
+    var label = info.n ? ('Moon ' + info.n + ' of ' + info.count + ' · ' + info.year) : 'Moon';
+    document.getElementById('lun-title').textContent = label + ' · ' + fmtDay(start) + ' – ' + fmtDay(addDays(next, -1)) + ' · ' + days + ' days';
+    var today = ymd(new Date());
+    var html = '';
+    var i;
+    for (i = 0; i < start.getDay(); i++) html += '<div class="cal-cell empty"></div>';
+    for (i = 0; i < days; i++) {
+      var dt = addDays(new Date(start.getFullYear(), start.getMonth(), start.getDate()), i);
+      var key = ymd(dt);
+      var sub = (dt.getMonth() !== start.getMonth() || i === 0) ? MONTHS[dt.getMonth()].slice(0, 3) : '';
+      html += '<div class="cal-cell' + (key === today ? ' today' : '') + '"><span class="num">' + dt.getDate() + '</span>' +
+        (sub ? '<span class="sub">' + sub + '</span>' : '') + holDots(key) + '</div>';
+    }
+    document.getElementById('lun-grid').innerHTML = html;
+  }
+
+  function refreshCals() {
+    holByDay = mergeYears(gregY);
+    renderGreg();
+    renderLun();
+  }
+
+  function goToday() {
+    var now = new Date();
+    gregY = now.getFullYear();
+    gregM = now.getMonth();
+    lunK = M.lastNewK(now);
+    refreshCals();
+  }
+
+  function showPop(key, i, el) {
+    var h = (holByDay[key] || [])[i];
+    var pop = document.getElementById('cal-pop');
+    if (!h) { pop.style.display = 'none'; return; }
+    pop.innerHTML = '<strong>' + h.name + '</strong>' + (h.note || '');
+    pop.style.display = 'block';
+    var r = el.getBoundingClientRect();
+    var left = Math.min(window.innerWidth - 260, Math.max(8, r.left));
+    var top = r.bottom + 6;
+    if (top + 80 > window.innerHeight) top = r.top - 80;
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.classList && t.classList.contains('hol-dot')) {
+      showPop(t.getAttribute('data-key'), +t.getAttribute('data-i'), t);
+      e.stopPropagation();
+      return;
+    }
+    document.getElementById('cal-pop').style.display = 'none';
+  });
+
+  document.getElementById('lun-prev').onclick = function () { lunK -= 1; refreshCals(); };
+  document.getElementById('lun-next').onclick = function () { lunK += 1; refreshCals(); };
+  document.getElementById('greg-prev').onclick = function () {
+    gregM -= 1; if (gregM < 0) { gregM = 11; gregY -= 1; } refreshCals();
+  };
+  document.getElementById('greg-next').onclick = function () {
+    gregM += 1; if (gregM > 11) { gregM = 0; gregY += 1; } refreshCals();
+  };
+  document.getElementById('cal-today').onclick = goToday;
+
+  function renderHero() {
+    var now = new Date();
+    var p = M.phaseAt(now);
+    drawMoon(p.phase);
+    document.getElementById('phase-name').textContent = M.phaseName(p.phase);
+    document.getElementById('phase-meta').textContent =
+      Math.round(p.illumination * 100) + '% illuminated · ' + p.age.toFixed(1) + ' days since New Moon';
+    var next = M.nextPhases(now, 4);
+    document.getElementById('phase-next').innerHTML = next.map(function (x) {
+      return x.type + ': ' + fmtLong(x.date);
+    }).join('<br>');
+  }
+
+  function upcomingHtml() {
+    var now = new Date();
+    var items = [];
+    M.nextPhases(now, 4).forEach(function (x) {
+      items.push({ t: x.date.getTime(), html: x.type + ': ' + fmtLong(x.date) });
+    });
+    var map = mergeYears(now.getFullYear());
+    Object.keys(map).forEach(function (k) {
+      var d = fromYmd(k);
+      if (d >= new Date(now.getFullYear(), now.getMonth(), now.getDate())) {
+        map[k].forEach(function (h) {
+          items.push({ t: d.getTime(), html: h.name + ': ' + fmtDay(d) });
+        });
+      }
+    });
+    items.sort(function (a, b) { return a.t - b.t; });
+    var seen = {};
+    var out = [];
+    items.forEach(function (it) {
+      if (seen[it.html]) return;
+      seen[it.html] = 1;
+      out.push(it);
+    });
+    document.getElementById('upcoming-list').innerHTML = out.slice(0, 14).map(function (it) {
+      return '<li>' + it.html + '</li>';
+    }).join('');
+  }
+
+  function zodiac() {
+    var now = new Date();
+    var m = now.getMonth() + 1, d = now.getDate();
+    var signs = [
+      ['Capricorn', 'Dec 22 – Jan 19', m === 12 && d >= 22 || m === 1 && d <= 19],
+      ['Aquarius', 'Jan 20 – Feb 18', m === 1 && d >= 20 || m === 2 && d <= 18],
+      ['Pisces', 'Feb 19 – Mar 20', m === 2 && d >= 19 || m === 3 && d <= 20],
+      ['Aries', 'Mar 21 – Apr 19', m === 3 && d >= 21 || m === 4 && d <= 19],
+      ['Taurus', 'Apr 20 – May 20', m === 4 && d >= 20 || m === 5 && d <= 20],
+      ['Gemini', 'May 21 – Jun 20', m === 5 && d >= 21 || m === 6 && d <= 20],
+      ['Cancer', 'Jun 21 – Jul 22', m === 6 && d >= 21 || m === 7 && d <= 22],
+      ['Leo', 'Jul 23 – Aug 22', m === 7 && d >= 23 || m === 8 && d <= 22],
+      ['Virgo', 'Aug 23 – Sep 22', m === 8 && d >= 23 || m === 9 && d <= 22],
+      ['Libra', 'Sep 23 – Oct 22', m === 9 && d >= 23 || m === 10 && d <= 22],
+      ['Scorpio', 'Oct 23 – Nov 21', m === 10 && d >= 23 || m === 11 && d <= 21],
+      ['Sagittarius', 'Nov 22 – Dec 21', m === 11 && d >= 22 || m === 12 && d <= 21]
+    ];
+    var s = signs.filter(function (x) { return x[2]; })[0] || signs[0];
+    document.getElementById('zodiac-aside').textContent = 'Sun in ' + s[0] + ' (' + s[1] + '). Date range only, no horoscope.';
+  }
+
+  function pressureBand(hpa) {
+    if (hpa >= 1022) return { id: 'high', label: 'High' };
+    if (hpa >= 1008) return { id: 'avg', label: 'Average' };
+    return { id: 'low', label: 'Low' };
+  }
+
+  function pressureFeel(hpa, trend) {
+    var band = pressureBand(hpa);
+    var t = band.id === 'high' ? 'High pressure: often clearer, more stable air.'
+      : band.id === 'low' ? 'Low pressure: clouds or a front may be close; stormier air is more likely.'
+      : 'Near average sea-level pressure.';
+    if (trend === 'Falling') t += ' A falling barometer is what many people feel in joints, sinuses, or a headache.';
+    if (trend === 'Rising') t += ' Rising pressure often follows a front and can feel clearer.';
+    return t;
+  }
+
+  function applyWeather(data, name) {
+    var cur = data.current || {};
+    var hpa = cur.pressure_msl;
+    var code = cur.weather_code;
+    var trend = 'Steady';
+    if (data.hourly && data.hourly.pressure_msl && data.hourly.time) {
+      var times = data.hourly.time, vals = data.hourly.pressure_msl;
+      var nowIso = cur.time;
+      var idx = times.indexOf(nowIso);
+      if (idx >= 3) {
+        var delta = vals[idx] - vals[idx - 3];
+        if (delta > 0.6) trend = 'Rising';
+        else if (delta < -0.6) trend = 'Falling';
+      }
+    }
+    document.getElementById('wx-place').textContent = name || 'Selected point';
+    var hpaEl = document.getElementById('wx-hpa');
+    var bandEl = document.getElementById('wx-band');
+    var statEl = document.getElementById('wx-hpa-stat');
+    statEl.classList.remove('band-high', 'band-avg', 'band-low');
+    if (hpa != null) {
+      var band = pressureBand(hpa);
+      hpaEl.textContent = Math.round(hpa) + ' hPa';
+      bandEl.hidden = false;
+      bandEl.textContent = band.label;
+      statEl.classList.add('band-' + band.id);
+    } else {
+      hpaEl.textContent = '-';
+      bandEl.hidden = true;
+    }
+    document.getElementById('wx-trend').textContent = trend;
+    document.getElementById('wx-sky').textContent = WX_CODES[code] || ('Code ' + code);
+    document.getElementById('wx-feel').textContent = hpa != null ? pressureFeel(hpa, trend) : 'No pressure reading.';
+  }
+
+  function fetchWx(lat, lon, name) {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+      '&current=weather_code,pressure_msl,temperature_2m&hourly=pressure_msl&forecast_days=2&timezone=auto';
+    document.getElementById('wx-place').textContent = 'Loading…';
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      try { localStorage.setItem('cov_moon_wx', JSON.stringify({ lat: lat, lon: lon, name: name })); } catch (e) {}
+      applyWeather(data, name);
+    }).catch(function () {
+      document.getElementById('wx-feel').textContent = 'Could not load Open-Meteo. Essays below still apply.';
+    });
+  }
+
+  document.getElementById('wx-geo').onclick = function () {
+    if (!navigator.geolocation) {
+      document.getElementById('wx-feel').textContent = 'Geolocation is not available. Search a city.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      fetchWx(pos.coords.latitude, pos.coords.longitude, 'Your location');
+    }, function () {
+      document.getElementById('wx-feel').textContent = 'Location blocked. Search a city instead.';
+    });
+  };
+
+  document.getElementById('wx-go').onclick = function () {
+    var q = document.getElementById('wx-q').value.trim();
+    if (!q) return;
+    fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q) + '&count=1&language=en&format=json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.results || !data.results[0]) {
+          document.getElementById('wx-feel').textContent = 'No city match.';
+          return;
+        }
+        var c = data.results[0];
+        var name = c.name + (c.admin1 ? ', ' + c.admin1 : '') + (c.country ? ', ' + c.country : '');
+        fetchWx(c.latitude, c.longitude, name);
+      }).catch(function () {
+        document.getElementById('wx-feel').textContent = 'City search failed.';
+      });
+  };
+
+  renderHero();
+  goToday();
+  upcomingHtml();
+  zodiac();
+  try {
+    var saved = JSON.parse(localStorage.getItem('cov_moon_wx') || 'null');
+    if (saved && saved.lat) fetchWx(saved.lat, saved.lon, saved.name);
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
